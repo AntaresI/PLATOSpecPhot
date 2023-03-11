@@ -1,0 +1,85 @@
+
+import os
+import configparser
+from astropy.io import fits
+import numpy as np
+
+from file_and_folder_preparationPlatoSpec import file_and_folder_preparation
+from file_reductionPlatoSpec import file_reduction
+
+def reduction():
+    
+    '''LOADING CONFIG FILE'''
+    print("LOADING CONFIG FILE")
+    config = configparser.ConfigParser()
+    config.read('config.ini')
+    ''''''    
+    
+    image_file_array, path_array, main_files_obj_raw, main_paths_obj_raw = file_and_folder_preparation(config)
+    
+    
+    '''RAW IMAGES CALIBRATION'''
+    
+    print('CALIBRATING RAW IMAGES')
+    
+    reduction_files = file_reduction(image_file_array, path_array)
+    
+    counter = 0
+    threshold = 3600
+    for file in main_paths_obj_raw:
+        
+        with fits.open(file) as obj_raw:
+            obj_raw_data, helper = obj_raw[0].data, obj_raw[0].data
+         
+            obj_where_less = obj_raw_data < threshold
+            obj_where_more = obj_raw_data > threshold
+            
+            helper = helper.astype('float16') #otherwise casting type error (combined darks are also float)
+            
+            np.subtract(helper, reduction_files[0], out=helper, where=obj_where_less)
+            np.subtract(helper, reduction_files[1], out=helper, where=obj_where_more)
+            
+            fneg = helper < 0
+            helper[fneg] = 0    #setting the negative values after dark subtracting to zero
+                            #unravel_index(a.argmax(), a.shape)
+            helper = helper.astype('float16')
+            
+            np.divide(helper, reduction_files[2], out=helper, where=obj_where_less)
+            np.divide(helper, reduction_files[3], out=helper, where=obj_where_more)
+            
+            helper = helper.astype('uint16')
+            
+            obj_raw[0].data = helper
+            obj_raw[0].writeto(path_array[5] / main_files_obj_raw[counter],overwrite=True)
+            counter += 1
+            print(counter)
+    ''''''    
+    
+    '''CREATING PATH TO FOLDER WITH REDUCED RAW IMAGES FOR PHOTOMETRY'''
+    main_files_obj_red = os.listdir(path_array[5])
+    main_paths_obj_red = [path_array[5].__str__()+'\\'+main_files_obj_red[i] for i in range(len(main_files_obj_red))]
+    
+    return main_paths_obj_red, config
+
+  # dead pixel map, vytvořit mapu true/false hodnot, nahradit ho nějakými průměrnými hodnotami kolem (zjistit), už na začátku, podívat do dat a zjistit pattern těch nul
+  # vynést je, otevřít snímek, najít nuly
+  # linearity check, je detektor lineární? a kam? 
+  # u flatů hodnoty, graf, zkusit vynásobení koeficientem ze SIPS, vynést
+  # signal to noise calculator, zadat magnitudu, exptime a vypadne signal to noise
+  #zkusit přidat offset, nepřidat offset
+  
+'''HELPING LINES FOR MANUAL TESTING OF SINGLE IMAGE'''
+  #for just data: data = fits.getdata('D:\\Johnny\\Documents\\Matfyz\\astro\\Diplomová práce\\data-Fryda - kopie2\\data-Fryda\\\DS-Tuc-filter0-3s-1x1\\z20220905000436.fit')
+  
+  #for updating one:
+  # hdul = fits.open('D:\\Johnny\\Documents\\Matfyz\\astro\\Diplomová práce\\data-Fryda - kopie2\\data-Fryda\\\DS-Tuc-filter0-3s-1x1\\z20220905000436.fit',mode='update')   
+  # data = hdul[0].data   although it's a numpy array it is still connected to fits, so if called .close() then it updates
+  # data[0,0]=95
+  # hdul.close()
+  
+  # for opening new file:
+  # hdul = fits.open('D:\\Johnny\\Documents\\Matfyz\\astro\\Diplomová práce\\data-Fryda - kopie2\\data-Fryda\\\DS-Tuc-filter0-3s-1x1\\z20220905000436.fit')  
+  # data = hdul[0].data
+  # data = data-1
+  # fits.writeto('D:\\Johnny\\Documents\\Matfyz\\astro\\Diplomová práce\\data-Fryda - kopie2\\data-Fryda\\pokus.fit',data,overwrite=True)
+''''''
