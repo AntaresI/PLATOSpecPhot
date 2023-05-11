@@ -1,4 +1,3 @@
-
 import numpy as np
 import matplotlib.pyplot as plt
 import math
@@ -6,7 +5,7 @@ import math
 def plotting(targ_lc, comp_lc, vali_lc, radii):
     
     while True:
-        boolean_inputs = ["yes", "no"]
+        boolean_inputs = ["Y", "n"]
         num_of_apertures = len(radii)
         
         '''COMPUTING DIFFERENCES OF MAGNITUDES AND COMPUTING STANDARD DEVIATIONS'''
@@ -48,7 +47,7 @@ def plotting(targ_lc, comp_lc, vali_lc, radii):
         
         '''GETTING INPUT FROM USER WHETHER TO PLOT ERRORBARS'''
         while True:
-            errorbars = input("Do you wish to plot errorbars? Yes or no:")
+            errorbars = input("Do you wish to plot errorbars? Y/n: ")
             
             if errorbars in boolean_inputs:
                 break
@@ -57,7 +56,7 @@ def plotting(targ_lc, comp_lc, vali_lc, radii):
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''
                 
         '''PLOTTING'''
-        if errorbars == "yes" :
+        if errorbars == "Y" :
             # fig, axs = plt.subplots(2,gridspec_kw={'height_ratios': [3, 1]},sharex=True)
             # axs[0].scatter(times2x2,meansalllo2, s=20,color='blue')
 
@@ -117,41 +116,6 @@ def plotting(targ_lc, comp_lc, vali_lc, radii):
              else:
                  print("Invalid input") 
                  
-        if yes_or_no == 'no' :
+        if yes_or_no == 'n' :
             break
-        
-
-     # if errorbars == "yes" :
-         
-     #     plt.figure(1,figsize=(16,8))
-     #     plt.errorbar(vali_lc[0,:]-math.floor(vali_lc[0,0])+2400000.5,vali_lc_diff,yerr=diff_lc_vali_err,fmt='b.',ecolor='black',capsize=2)
-     #     plt.xlabel('JD-'+str(math.floor(vali_lc[0,0])+2400001),fontsize=10)
-     #     plt.ylabel('$\Delta m$', fontsize=10)
-     #     plt.gca().invert_yaxis()
-     #     plt.title('Comparison - Validation      Aperture'+str(int(radii[aper_num]))+" pxl")
-         
-     #     plt.figure(2,figsize=(16,8))
-     #     plt.errorbar(targ_lc[0,:]-math.floor(targ_lc[0,0])+2400000.5,targ_lc_diff,yerr=diff_lc_targ_err,fmt='r.',ecolor='black',capsize=2)
-     #     plt.xlabel('JD-'+str(math.floor(targ_lc[0,0])+2400001),fontsize=10)
-     #     plt.ylabel('$\Delta m$', fontsize=10)
-     #     plt.gca().invert_yaxis()
-     #     plt.title('Visual - Comparison         Aperture '+str(int(radii[aper_num]))+" pxl")
-         
-     #     plt.show()
-         
-     # else:
-     #     plt.figure(1,figsize=(16,8))
-     #     plt.errorbar(vali_lc[0,:]-math.floor(vali_lc[0,0])+2400000.5,vali_lc_diff,yerr=None,fmt='b.',ecolor='black',capsize=2)
-     #     plt.xlabel('JD-'+str(math.floor(vali_lc[0,0])+2400001),fontsize=10)
-     #     plt.ylabel('$\Delta m$', fontsize=10)
-     #     plt.gca().invert_yaxis()
-     #     plt.title('Comparison - Validation      Aperture'+str(int(radii[aper_num]))+" pxl")
-         
-     #     plt.figure(2,figsize=(16,8))
-     #     plt.errorbar(targ_lc[0,:]-math.floor(targ_lc[0,0])+2400000.5,targ_lc_diff,yerr=None,fmt='r.',ecolor='black',capsize=2)
-     #     plt.xlabel('JD-'+str(math.floor(targ_lc[0,0])+2400001),fontsize=10)
-     #     plt.ylabel('$\Delta m$', fontsize=10)
-     #     plt.gca().invert_yaxis()
-     #     plt.title('Visual - Comparison         Aperture '+str(int(radii[aper_num]))+" pxl")
-     #     plt.show()
         
