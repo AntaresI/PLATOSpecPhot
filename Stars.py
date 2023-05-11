@@ -1,4 +1,3 @@
-
 import photutils as pht
 from astropy.stats import sigma_clipped_stats
 from astropy.stats import SigmaClip
