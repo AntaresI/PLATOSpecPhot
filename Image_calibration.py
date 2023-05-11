@@ -65,25 +65,3 @@ def image_calibration():
     return main_paths_obj_red
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     
-  # dead pixel map, vytvořit mapu true/false hodnot, nahradit ho nějakými průměrnými hodnotami kolem (zjistit), už na začátku, podívat do dat a zjistit pattern těch nul
-  # vynést je, otevřít snímek, najít nuly
-  # linearity check, je detektor lineární? a kam? 
-  # u flatů hodnoty, graf, zkusit vynásobení koeficientem ze SIPS, vynést
-  # signal to noise calculator, zadat magnitudu, exptime a vypadne signal to noise
-  #zkusit přidat offset, nepřidat offset
-  
-'''HELPING LINES FOR MANUAL TESTING OF SINGLE IMAGE'''
-  #for just data: data = fits.getdata('D:\\Johnny\\Documents\\Matfyz\\astro\\Diplomová práce\\data-Fryda - kopie2\\data-Fryda\\\DS-Tuc-filter0-3s-1x1\\z20220905000436.fit')
-  
-  #for updating one:
-  # hdul = fits.open('D:\\Johnny\\Documents\\Matfyz\\astro\\Diplomová práce\\data-Fryda - kopie2\\data-Fryda\\\DS-Tuc-filter0-3s-1x1\\z20220905000436.fit',mode='update')   
-  # data = hdul[0].data   although it's a numpy array it is still connected to fits, so if called .close() then it updates
-  # data[0,0]=95
-  # hdul.close()
-  
-  # for opening new file:
-  # hdul = fits.open('D:\\Johnny\\Documents\\Matfyz\\astro\\Diplomová práce\\data-Fryda - kopie2\\data-Fryda\\\DS-Tuc-filter0-3s-1x1\\z20220905000436.fit')  
-  # data = hdul[0].data
-  # data = data-1
-  # fits.writeto('D:\\Johnny\\Documents\\Matfyz\\astro\\Diplomová práce\\data-Fryda - kopie2\\data-Fryda\\pokus.fit',data,overwrite=True)
-''''''
