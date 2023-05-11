@@ -1,5 +1,3 @@
-
-
 import ccdproc as ccdp
 from astropy import units as u
 import numpy as np
