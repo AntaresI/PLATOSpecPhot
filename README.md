@@ -54,8 +54,9 @@ After entering the parameters separated by a comma, you will then get a plot dis
 
 When you are satisfied with the photometry parameters, you will then be asked which method of background computation to use. If you choose annulus method, then you will be asked to input the inner and outer aperture radii, separated by a comma.
 Afterwards you need to input all the aperture radii for which you want to compute photometry, separated by a comma. These will then be saved in a text file, so that it can be used as the final checkpoint, when you just want to see the light-curves. 
-Once you input the radii, photometry process starts, so wait for all the images to be processed. For every processed image a metadata file with the extension `-phot` is created which contains all the information output from https://photutils.readthedocs.io/en/stable/api/photutils.aperture.aperture_photometry.html#photutils.aperture.aperture_photometry
+Once you input the radii, photometry process starts, so wait for all the images to be processed (see image below). For every processed image a metadata file with the extension `-phot` is created which contains all the information output from https://photutils.readthedocs.io/en/stable/api/photutils.aperture.aperture_photometry.html#photutils.aperture.aperture_photometry
 
+![hi](/img/picture6.png)
 ### Step 3: differential photometry (seventh question)
 After finishing photometry, the centroid coordinates have to be shifted relatively to the position of centroids on one reference image, so that they exactly match. For this purpose, the pipeline will ask you to select a reference image. The task of the `Centroid_shifting_and_LC_making.py` script is to load all the centroid coordinates and then with a histogram method determine how much are the centroids of an image shifted in the x and y direction relative to the centroids on the reference image and move them accordingly so that their positions are ideally the same or at least very close (1 to 3 pixels) to the centroids of reference image.
 
