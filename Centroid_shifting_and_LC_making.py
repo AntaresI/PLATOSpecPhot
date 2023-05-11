@@ -21,20 +21,20 @@ def centroid_shifting_and_lc_making(main_paths_obj_red,radii):
     reduced_phot_path.mkdir(exist_ok=True) 
     
     '''GETTING INDEX OF IMAGE USED FOR CENTROID SHIFTING FROM USER'''
-    user_matching_index_input = input("Enter index of an image which you want to use for centroid \
-                                       shifting. The index of an image corresponds to its position\
-                                        in the reduced folder. Index of the image: ")
+    user_matching_index_input = input("Enter index of an image which you want to use for centroid "
+                                       "shifting. The index of an image corresponds to its position"
+                                       " in the reduced folder. Index of the image:  ")
     user_matching_index_input = int(user_matching_index_input)  
-    print("The path to the image is ",main_paths_obj_red[int(user_matching_index_input)])    
+    print("The path to the referenced image is ",main_paths_obj_red[int(user_matching_index_input)])    
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
     '''GETTING COORDINATES OF TARGET,COMPARISON AND VALIDATION STAR'''                          
-    user_coordinates_targ_input = input("Write down the coordinates of target star (visual) in form \
-                                        of xcoord, ycoord. Then press enter: ")
-    user_coordinates_comp_input = input("Write down the coordinates of comparison star in form\
-                                        of xcoord, ycoord. Then press enter:   ")
-    user_coordinates_vali_input = input("Write down the coordinates of validation star in form\
-                                        of xcoord, ycoord. Then press enter:   ")
+    user_coordinates_targ_input = input("Write down the coordinates of target star (visual) in form"
+                                        " of xcoord, ycoord. Then press enter:   ")
+    user_coordinates_comp_input = input("Write down the coordinates of comparison star in form"
+                                        " of xcoord, ycoord. Then press enter:   ")
+    user_coordinates_vali_input = input("Write down the coordinates of validation star in form"
+                                        " of xcoord, ycoord. Then press enter:   ")
     user_coordinates_targ_input = user_coordinates_targ_input.split(",")
     user_coordinates_comp_input = user_coordinates_comp_input.split(",")
     user_coordinates_vali_input = user_coordinates_vali_input.split(",")
@@ -107,12 +107,13 @@ def centroid_shifting_and_lc_making(main_paths_obj_red,radii):
              idx = np.argmax(yhist)
              ysht0 = (ybins[idx]+ybins[idx+1])/2.0
              
-             print("initial shift:",xsht0,ysht0)
+             print("Initially computed shift in x direction: ",xsht0)
+             print("Initially computed shift in y direction: ",ysht0)
              ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
              
              '''ADDITIONAL FINETUNING(NOT REALLY NECESSARY BECAUSE OF THE LARGE NUMBER OF BINS)'''
              mask = (np.abs(xx-xsht0)<np.abs(2*xsht0)) & (np.abs(yy-ysht0)<np.abs(2*ysht0))
-             print(mask.sum())
+             # print(mask.sum())
              if mask.sum() == 0:
                 constant = 2
                 while True:
@@ -123,7 +124,8 @@ def centroid_shifting_and_lc_making(main_paths_obj_red,radii):
                         break
              xsht1 = np.nanmedian(xx[mask])
              ysht1 = np.nanmedian(yy[mask])
-             print("finetuned shift:",xsht1,ysht1)
+             print("Finetuned shift in x direction: ",xsht1)
+             print("Finetuned shift in y direction: ",ysht1)
              ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
              
              '''PERFORMING SHIFT OF CENTROIDS OF STARS'''
@@ -172,8 +174,8 @@ def centroid_shifting_and_lc_making(main_paths_obj_red,radii):
         vali_lc[0,i] = mjd
         ''''''''''''''''''''''''''''''''''''''''''
         
-        print("MJD: ",datestr,mjd)
-        print("reading:", i+1,"/",len(main_paths_obj_red),ifile)
+        # print("MJD: ",datestr,mjd)
+        print("Reading image metadata:", i+1,"/",len(main_paths_obj_red),ifile)
         
         phot = fits.getdata(photfile)
         x = phot['x_sht']
@@ -227,8 +229,10 @@ def centroid_shifting_and_lc_making(main_paths_obj_red,radii):
         else:
             vali_lc[1:,i] = np.nan
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''    
-        print(dt,dc,dv)
-    
+        print("Distance between input coordinates of target star and closest object is: ",dt)
+        print("Distance between input coordinates of comparison star and closest object is: ",dc)
+        print("Distance between input coordinates of validation star and closest object is: ",dv)
+        
     '''SAVING LIGHTCURVES AND RADII TO TEXT FILE IN LIGHTCURVES FOLDER'''    
     np.savetxt(reduced_lc_path.__str__()+'\\target_lc.txt',target_lc) 
     np.savetxt(reduced_lc_path.__str__()+'\\comp_lc.txt',comp_lc)
