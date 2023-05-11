@@ -8,17 +8,17 @@ from Photometry_parameters import phot_params_from_user
 from Photometry import LightCurve
 from Plotting import plotting
 from Centroid_shifting_and_LC_making import centroid_shifting_and_lc_making
-boolean_inputs = ["yes", "no"]
+boolean_inputs = ["Y", "n"]
 
 '''ASKING WHETHER CALIBRATION OF IMAGES HAS ALREADY BEEN COMPLETED'''
 
 while True:
-    after_calibration_or_not = input("Has calibration of raw images already been completed? If yes,\
-                                   the program will continue doing photometry with objects found in\
-                                   calib_obj directory of working directory (it is therefore expected \
-                                   that calibration has been completed and the working directory\
-                                   structure is unchanged), if no then calibration will be performed.\
-                                   yes or no: ")
+    after_calibration_or_not = input("Has calibration of raw images already been completed? If yes,"
+                                   " the program will continue doing photometry with objects \nfound in"
+                                   " calib_obj directory of working directory (it is therefore expected"
+                                   " that calibration has been completed and \nthe working directory"
+                                   " structure is unchanged), if no then calibration will be performed."
+                                   " Y/n: ")
     if after_calibration_or_not in boolean_inputs:
         break
     else:
@@ -27,7 +27,7 @@ while True:
 
 '''RUNNING CALIBRATION SCRIPT AND CREATING DIRECTORIES'''
 
-if after_calibration_or_not == "no":
+if after_calibration_or_not == "n":
         
         main_paths_obj_calib = image_calibration()
         
@@ -68,9 +68,9 @@ else:
 '''ASKING WHETHER PHOTOMETRY HAS ALREADY BEEN COMPLETED'''
 
 while True:
-    after_phot_or_not = input("Has photometry already been completed? If yes the program will load\
-                                    the appropriate light curve data and will continue on to matching and plotting,\
-                                    if no then photometry will be performed, yes or no: ")
+    after_phot_or_not = input("Has photometry already been completed? If yes the program will load"
+                              " the appropriate light curve data and will continue \non to matching and plotting,"
+                              " if no then photometry will be performed. Y/n: ")
     if after_phot_or_not in boolean_inputs:
         break
     else:
@@ -79,22 +79,22 @@ while True:
 
 '''RUNNING PHOTOMETRY SCRIPTS'''    
     
-if after_phot_or_not == "no":
+if after_phot_or_not == "n":
            user_input_array = phot_params_from_user(main_paths_obj_calib)
-           targ_lc, comp_lc, vali_lc, radii = LightCurve(main_paths_obj_calib, user_input_array, reduced_phot_path, reduced_lc_path)                                  
+           targ_lc, comp_lc, vali_lc, radii = LightCurve(main_paths_obj_calib, user_input_array, calib_phot_path, reduced_lc_path)                                  
 
 else:
            while True:
-               after_match_or_not = input("Has matching and light curve data generation already been\
-                                           completed? If yes the program will load the appropriate\
-                                           light curve data and will continue on to plotting, if no\
-                                           then matching will be performed, yes or no: ")
+               after_match_or_not = input("Has matching and light curve data generation already been"
+                                          " completed? If yes the program will load the appropriate"
+                                          " light curve data and will continue on to plotting, if no"
+                                          " then matching will be performed. Y/n: ")
                if after_match_or_not in boolean_inputs:
                    break
                else:
                    print("Invalid input")
                    
-           if after_match_or_not == "no":
+           if after_match_or_not == "n":
                       radii = np.loadtxt(reduced_lc_path.__str__()+'\\radii.txt')                     
                       targ_lc, comp_lc, vali_lc, radii = centroid_shifting_and_lc_making(main_paths_obj_calib,radii)
                       
