@@ -1,4 +1,3 @@
-
 import numpy as np
 import photutils as pht
 from astropy.io import fits
@@ -14,9 +13,9 @@ def LightCurve(main_paths_obj_red, user_input_array, reduced_phot_path, reduced_
     '''GETTING METHOD OF BACKGROUND COMPUTATION FROM USER'''
     while True:
         one_or_two = [1,2]
-        user_background_method_input = input("Write which method you wish to use as background computation.\
-                                          1 corresponds to the iteration sigma method. 2 corresponds to \
-                                          the annulus method. 1 or 2: ")
+        user_background_method_input = input("Write which method you wish to use as background computation."
+                                         " 1 corresponds to the iteration sigma method. 2 corresponds to"
+                                         " the annulus method. 1 or 2: ")
     
         user_background_method_input = int(user_background_method_input)
         if user_background_method_input in one_or_two:
@@ -24,29 +23,27 @@ def LightCurve(main_paths_obj_red, user_input_array, reduced_phot_path, reduced_
         else:
             print("Invalid input")
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''   
-
+    '''IF BACKGROUND COMPUTATION METHOD IS THE ANNULUS METHOD THEN GETTING THE ANNULUS RADII FROM USER'''
+    if user_background_method_input == 2:
+        user_annulus_radii_input = input("Write the circular annulus inner and outer radius separated by"
+                                        " a comma which will be used to estimate the background \naround an"
+                                         " object. Note that the numbers you type in will be added to the"
+                                         " aperture radius (so if you type in 5,7 then \naperture radius + 5"
+                                         " will be used as a radius of the inner circular annulus and"
+                                         " aperture radius + 7 will be used as a \nradius for outer circular"
+                                        " annulus. Then press Enter: ")
+                                          
+        user_annulus_radii_input = user_annulus_radii_input.split(",")
+        annulus_radii = [int(float(param)) for param in user_annulus_radii_input]                                  
+    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     '''GETTING APERTURE RADII FROM USER'''
-    user_aperture_radii_input = input("Write the aperture radii that you wish to use for photometry \
-                                       separated by a comma, then press Enter: ")
+    user_aperture_radii_input = input("Write the aperture radii that you wish to use for photometry"
+                                      " separated by a comma, then press Enter: ")
                                        
     user_aperture_radii_input = user_aperture_radii_input.split(",")
     radii = [int(float(param)) for param in user_aperture_radii_input]
     np.savetxt(reduced_lc_path.__str__()+'\\radii.txt',radii) 
-    ''''''''''''''''''''''''''''''''''''
-    
-    '''IF BACKGROUND COMPUTATION METHOD IS THE ANNULUS METHOD THEN GETTING THE ANNULUS RADII FROM USER'''
-    if user_background_method_input == 2:
-        user_annulus_radii_input = input("Write the circular annulus inner and outer radius separated by \
-                                          a comma which will be used to estimate the background around an \
-                                          object. Note that the numbers you type in will be added to the \
-                                          aperture radius (so if you type in 5,7 then aperture radius + 5 \
-                                          will be used as a radius of the inner circular annulus and \
-                                          aperture radius + 7 will be used as a radius for outer circular \
-                                          annulus. Then press Enter: ")
-                                          
-        user_annulus_radii_input = user_annulus_radii_input.split(",")
-        annulus_radii = [int(float(param)) for param in user_annulus_radii_input]                                  
-    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''    
+    ''''''''''''''''''''''''''''''''''''    
         
     '''FINDING ALL STARS IN SEQUENCE AND GATHERING INFO ABOUT THEIR POSITIONS AND MAGNITUDES'''
     if user_background_method_input == 2:
@@ -76,8 +73,8 @@ def LightCurve(main_paths_obj_red, user_input_array, reduced_phot_path, reduced_
             error = calc_total_error(data_img-bkg.background, bkg.background_rms, 1/0.85)
             aper_phot = pht.aperture_photometry(data_img, apertures, error=error)
             ''''''''''''''''''''''''''''''''''''
-            print(len(aper_phot))
-            print(aper_phot['xcenter'],aper_phot['ycenter'])
+            print("Number of objects detected is: ", len(aper_phot))
+            print("X coordinates of centroids on the image are: ",aper_phot['xcenter']," Y coordinates of centroids on the image are: ",aper_phot['ycenter'])
             
             '''SUBTRACTING FLUX FROM CIRCULAR ANNULUS AND CONVERTING FLUX TO MAGNITUDE''' 
             for j in range(len(radii)):
@@ -128,8 +125,8 @@ def LightCurve(main_paths_obj_red, user_input_array, reduced_phot_path, reduced_
             '''PERFORMING APERTURE PHOTOMETRY WITH SUBTRACTED BACKGROUND'''
             error = calc_total_error(data_img-bkg.background, bkg.background_rms, 1/0.85)
             aper_phot = pht.aperture_photometry(data_img-bkg.background, apertures, error=error)
-            print(len(aper_phot))
-            print(aper_phot['xcenter'],aper_phot['ycenter'])
+            print("Number of objects detected is: ", len(aper_phot))
+            print("X coordinates of centroids on the image are: ",aper_phot['xcenter']," Y coordinates of centroids on the image are: ",aper_phot['ycenter'])
             ''''''''''''''''''''''''''''''''''''
             
             '''CONVERTING FLUX TO MAGNITUDE''' 
