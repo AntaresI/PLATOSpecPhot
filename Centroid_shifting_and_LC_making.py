@@ -14,10 +14,10 @@ def centroid_shifting_and_lc_making(main_paths_obj_red,radii):
     
     working_dir = config['PATHS']['workingdirectory']
     
-    reduced_lc_path = Path(working_dir +'\\calibrated\\Light_Curve')
+    reduced_lc_path = Path(working_dir +'//calibrated//Light_Curve')
     reduced_lc_path.mkdir(exist_ok=True)
     
-    reduced_phot_path = Path(working_dir +'\\calibrated\\reduced_obj_phot' )
+    reduced_phot_path = Path(working_dir +'//calibrated//reduced_obj_phot' )
     reduced_phot_path.mkdir(exist_ok=True) 
     
     '''GETTING INDEX OF IMAGE USED FOR CENTROID SHIFTING FROM USER'''
@@ -46,7 +46,7 @@ def centroid_shifting_and_lc_making(main_paths_obj_red,radii):
     
     '''GETTING COORDINATES OF THE STARS FROM MATCHING IMAGE METADATA FILE'''
     rootname,_=os.path.splitext(main_paths_obj_red[user_matching_index_input])
-    photfile = str(reduced_phot_path)+"\\"+rootname.split("\\")[-1]+"-phot.fits"
+    photfile = str(reduced_phot_path)+"//"+rootname.split("//")[-1]+"-phot.fits"
     phot1 = Table.read(photfile)
     x1 = phot1['xcenter']
     y1 = phot1['ycenter']
@@ -66,7 +66,7 @@ def centroid_shifting_and_lc_making(main_paths_obj_red,radii):
         
          '''LOADING PHOT METADATA FILE AND LOADING IMAGE'''
          rootname,_=os.path.splitext(ifile)
-         photfile = str(reduced_phot_path)+"\\"+rootname.split("\\")[-1]+"-phot.fits"
+         photfile = str(reduced_phot_path)+"//"+rootname.split("//")[-1]+"-phot.fits"
          print("calculate shifts :", i+1,"/",len(main_paths_obj_red),ifile)
          ''''''''''''''''''''''''''''''''''''''''''''''''
          
@@ -158,7 +158,7 @@ def centroid_shifting_and_lc_making(main_paths_obj_red,radii):
         
         '''LOADING PHOT METADATA FILE'''
         rootname,_=os.path.splitext(ifile) 
-        photfile = str(reduced_phot_path)+"\\"+rootname.split("\\")[-1]+"-phot.fits"
+        photfile = str(reduced_phot_path)+"//"+rootname.split("//")[-1]+"-phot.fits"
         head = fits.getheader(ifile)                    
         ''''''''''''''''''''''''''''''
         
@@ -234,9 +234,9 @@ def centroid_shifting_and_lc_making(main_paths_obj_red,radii):
         print("Distance between input coordinates of validation star and closest object is: ",dv)
         
     '''SAVING LIGHTCURVES AND RADII TO TEXT FILE IN LIGHTCURVES FOLDER'''    
-    np.savetxt(reduced_lc_path.__str__()+'\\target_lc.txt',target_lc) 
-    np.savetxt(reduced_lc_path.__str__()+'\\comp_lc.txt',comp_lc)
-    np.savetxt(reduced_lc_path.__str__()+'\\vali_lc.txt',vali_lc) 
+    np.savetxt(reduced_lc_path.__str__()+'//target_lc.txt',target_lc) 
+    np.savetxt(reduced_lc_path.__str__()+'//comp_lc.txt',comp_lc)
+    np.savetxt(reduced_lc_path.__str__()+'//vali_lc.txt',vali_lc) 
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     
     return target_lc, comp_lc, vali_lc,radii
