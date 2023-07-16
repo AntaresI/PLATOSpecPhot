@@ -60,7 +60,7 @@ def image_calibration():
     
     '''CREATING PATH TO FOLDER WITH CALIBRATED RAW IMAGES FOR PHOTOMETRY'''
     main_files_obj_red = os.listdir(path_array[5])
-    main_paths_obj_red = [path_array[5].__str__()+'\\'+main_files_obj_red[i] for i in range(len(main_files_obj_red))]
+    main_paths_obj_red = [path_array[5].__str__()+'//'+main_files_obj_red[i] for i in range(len(main_files_obj_red))]
     
     return main_paths_obj_red
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
