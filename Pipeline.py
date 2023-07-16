@@ -37,10 +37,10 @@ if after_calibration_or_not == "n":
         working_dir = config['PATHS']['workingdirectory']
         working_dir_path = Path(working_dir)
         
-        reduced_lc_path = Path(working_dir +'\\calibrated\\Light_Curve')
+        reduced_lc_path = Path(working_dir +'//calibrated//Light_Curve')
         reduced_lc_path.mkdir(exist_ok=True)
         
-        reduced_phot_path = Path(working_dir +'\\calibrated\\reduced_obj_phot' )
+        reduced_phot_path = Path(working_dir +'//calibrated//reduced_obj_phot' )
         reduced_phot_path.mkdir(exist_ok=True)
 
       
@@ -52,16 +52,16 @@ else:
         working_dir = config['PATHS']['workingdirectory']
         working_dir_path = Path(working_dir)
         
-        reduced_lc_path = Path(working_dir +'\\calibrated\\Light_Curve')
+        reduced_lc_path = Path(working_dir +'//calibrated//Light_Curve')
         reduced_lc_path.mkdir(exist_ok=True)
         
-        calib_obj_path = Path(working_dir +'\\calibrated\\reduced_obj' )
+        calib_obj_path = Path(working_dir +'//calibrated//reduced_obj' )
         calib_obj_path.mkdir(exist_ok=True)
         
         main_files_obj_calib = os.listdir(calib_obj_path)
-        main_paths_obj_calib = [calib_obj_path.__str__()+'\\'+main_files_obj_calib[i] for i in range(len(main_files_obj_calib))]
+        main_paths_obj_calib = [calib_obj_path.__str__()+'//'+main_files_obj_calib[i] for i in range(len(main_files_obj_calib))]
         
-        calib_phot_path = Path(working_dir +'\\calibrated\\reduced_obj_phot' )
+        calib_phot_path = Path(working_dir +'//calibrated//reduced_obj_phot' )
         calib_phot_path.mkdir(exist_ok=True)
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
@@ -95,15 +95,15 @@ else:
                    print("Invalid input")
                    
            if after_match_or_not == "n":
-                      radii = np.loadtxt(reduced_lc_path.__str__()+'\\radii.txt')                     
+                      radii = np.loadtxt(reduced_lc_path.__str__()+'//radii.txt')                     
                       targ_lc, comp_lc, vali_lc, radii = centroid_shifting_and_lc_making(main_paths_obj_calib,radii)
                       
            else:
                        
-                      targ_lc = np.loadtxt(reduced_lc_path.__str__()+'\\target_lc.txt') 
-                      comp_lc = np.loadtxt(reduced_lc_path.__str__()+'\\comp_lc.txt')
-                      vali_lc = np.loadtxt(reduced_lc_path.__str__()+'\\vali_lc.txt')
-                      radii = np.loadtxt(reduced_lc_path.__str__()+'\\radii.txt')
+                      targ_lc = np.loadtxt(reduced_lc_path.__str__()+'//target_lc.txt') 
+                      comp_lc = np.loadtxt(reduced_lc_path.__str__()+'//comp_lc.txt')
+                      vali_lc = np.loadtxt(reduced_lc_path.__str__()+'//vali_lc.txt')
+                      radii = np.loadtxt(reduced_lc_path.__str__()+'//radii.txt')
 ''''''''''''''''''''''''''''''''
 
 
