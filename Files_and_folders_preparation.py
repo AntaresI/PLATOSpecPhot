@@ -32,6 +32,7 @@ def file_and_folder_preparation(configfile):
     image_file_array.append(main_flats_raw_hi)
     
     main_path_flat_lo = Path(configfile['PATHS']['flatslo'])
+    print(main_path_flat_lo)
     main_flats_raw_lo = ccdp.ImageFileCollection(main_path_flat_lo)
     image_file_array.append(main_flats_raw_lo)
     
@@ -70,34 +71,34 @@ def file_and_folder_preparation(configfile):
         OF IMAGES THAT NEED TO BE CYCLED OVER TO ADD ADU UNIT INTO THE HEADER AND CHANGE ZERO ADU PIXELS'''
     
     main_files_obj_raw = os.listdir(main_path_obj_raw)
-    main_paths_obj_raw = [main_path_obj_raw.__str__()+'\\'+main_files_obj_raw[i] for i in range(len(main_files_obj_raw))]
+    main_paths_obj_raw = [main_path_obj_raw.__str__()+'//'+main_files_obj_raw[i] for i in range(len(main_files_obj_raw))]
     all_files.extend(main_paths_obj_raw)
   
     main_files_dark_hi = os.listdir(main_path_dark_hi)
-    main_paths_dark_hi = [main_path_dark_hi.__str__()+'\\'+main_files_dark_hi[i] for i in range(len(main_files_dark_hi))]
+    main_paths_dark_hi = [main_path_dark_hi.__str__()+'//'+main_files_dark_hi[i] for i in range(len(main_files_dark_hi))]
     all_files.extend(main_paths_dark_hi)
     
     main_files_dark_lo = os.listdir(main_path_dark_lo)
-    main_paths_dark_lo = [main_path_dark_lo.__str__()+'\\'+main_files_dark_lo[i] for i in range(len(main_files_dark_lo))]
+    main_paths_dark_lo = [main_path_dark_lo.__str__()+'//'+main_files_dark_lo[i] for i in range(len(main_files_dark_lo))]
     all_files.extend(main_paths_dark_lo)
     
     main_files_flat_hi = os.listdir(main_path_flat_hi)
-    main_paths_flat_hi = [main_path_flat_hi.__str__()+'\\'+main_files_flat_hi[i] for i in range(len(main_files_flat_hi))]
+    main_paths_flat_hi = [main_path_flat_hi.__str__()+'//'+main_files_flat_hi[i] for i in range(len(main_files_flat_hi))]
     all_files.extend(main_paths_flat_hi)
     flat_files.extend(main_paths_flat_hi)
     
     main_files_flat_lo  = os.listdir(main_path_flat_lo)
-    main_paths_flat_lo  = [main_path_flat_lo.__str__()+'\\'+main_files_flat_lo[i] for i in range(len(main_files_flat_lo))]
+    main_paths_flat_lo  = [main_path_flat_lo.__str__()+'//'+main_files_flat_lo[i] for i in range(len(main_files_flat_lo))]
     all_files.extend(main_paths_flat_lo)
     flat_files.extend(main_paths_flat_lo)
     
     flat_files_dark_hi = os.listdir(flat_path_dark_hi)
-    flat_paths_dark_hi = [flat_path_dark_hi.__str__()+'\\'+flat_files_dark_hi[i]  \
+    flat_paths_dark_hi = [flat_path_dark_hi.__str__()+'//'+flat_files_dark_hi[i]  \
                           for i in range(len(flat_files_dark_hi))]
     all_files.extend(flat_paths_dark_hi)
 
     flat_files_dark_lo = os.listdir(flat_path_dark_lo)
-    flat_paths_dark_lo  = [flat_path_dark_lo.__str__()+'\\'+flat_files_dark_lo[i] \
+    flat_paths_dark_lo  = [flat_path_dark_lo.__str__()+'//'+flat_files_dark_lo[i] \
                            for i in range(len(flat_files_dark_lo))]
         
     all_files.extend(flat_paths_dark_lo)
@@ -106,9 +107,10 @@ def file_and_folder_preparation(configfile):
     files_to_add_adu = list(set(all_files)-set(files_with_adu))
     files_to_cycle_over = list(set().union(files_to_add_adu, flat_files))
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-    
+   
     counter = 0
     for file in files_to_cycle_over:
+        print(file)
         with fits.open(file, 'update') as f:
             for hdu in f:
                 
@@ -138,15 +140,15 @@ def file_and_folder_preparation(configfile):
     reduced = configfile['PATHS']['workingdirectory']
     # reduced_path = Path(reduced)
     
-    calibrated_data_path = Path(reduced +'\\calibrated')
+    calibrated_data_path = Path(reduced +'//calibrated')
     calibrated_data_path.mkdir(exist_ok=True)
     path_array.append(calibrated_data_path)
         
-    reduced_darks_path = Path(reduced +'\\calibrated\\reduced_darks')
+    reduced_darks_path = Path(reduced +'//calibrated//reduced_darks')
     reduced_darks_path.mkdir(exist_ok=True)
     path_array.append(reduced_darks_path)
     
-    reduced_flats_path = Path(reduced +'\\calibrated\\reduced_flats')
+    reduced_flats_path = Path(reduced +'//calibrated//reduced_flats')
     reduced_flats_path.mkdir(exist_ok=True)
     path_array.append(reduced_flats_path)
     
@@ -154,11 +156,11 @@ def file_and_folder_preparation(configfile):
     subtracted_flats_hi_path.mkdir(exist_ok=True)
     path_array.append(subtracted_flats_hi_path)
     
-    subtracted_flats_lo_path = Path(reduced +'\\calibrated\\subtracted_flats_lo')
+    subtracted_flats_lo_path = Path(reduced +'//calibrated//subtracted_flats_lo')
     subtracted_flats_lo_path.mkdir(exist_ok=True)
     path_array.append(subtracted_flats_lo_path)
 
-    reduced_obj_path = Path(reduced +'\\calibrated\\reduced_obj' )
+    reduced_obj_path = Path(reduced +'//calibrated//reduced_obj' )
     reduced_obj_path.mkdir(exist_ok=True)
     path_array.append(reduced_obj_path)
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''            
