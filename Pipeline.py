@@ -40,8 +40,8 @@ if after_calibration_or_not == "n":
         reduced_lc_path = Path(working_dir +'//calibrated//Light_Curve')
         reduced_lc_path.mkdir(exist_ok=True)
         
-        reduced_phot_path = Path(working_dir +'//calibrated//reduced_obj_phot' )
-        reduced_phot_path.mkdir(exist_ok=True)
+        calib_phot_path = Path(working_dir +'//calibrated//reduced_obj_phot' )
+        calib_phot_path.mkdir(exist_ok=True)
 
       
 else:
