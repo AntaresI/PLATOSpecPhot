@@ -152,7 +152,7 @@ def file_and_folder_preparation(configfile):
     reduced_flats_path.mkdir(exist_ok=True)
     path_array.append(reduced_flats_path)
     
-    subtracted_flats_hi_path = Path(reduced +'\\calibrated\\subtracted_flats_hi')
+    subtracted_flats_hi_path = Path(reduced +'//calibrated//subtracted_flats_hi')
     subtracted_flats_hi_path.mkdir(exist_ok=True)
     path_array.append(subtracted_flats_hi_path)
     
