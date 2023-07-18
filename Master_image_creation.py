@@ -30,8 +30,8 @@ def file_calibration(image_file_array, path_array):
      combined_raw_darks_hi.meta['combined'] = True
      combined_raw_darks_lo.meta['combined'] = True
      
-     hi_dark_file_name = 'master_raw_dark_hi_{:6.2f}.fit'.format(exptimerawdarks)
-     lo_dark_file_name = 'master_raw_dark_lo_{:6.2f}.fit'.format(exptimerawdarks)
+     hi_dark_file_name = 'master_raw_dark_hi_{:4.2f}s.fit'.format(exptimerawdarks)
+     lo_dark_file_name = 'master_raw_dark_lo_{:4.2f}s.fit'.format(exptimerawdarks)
      
      combined_raw_darks_hi.write(path_array[1] / hi_dark_file_name, overwrite=True)
      combined_raw_darks_lo.write(path_array[1] / lo_dark_file_name, overwrite=True)
@@ -55,8 +55,8 @@ def file_calibration(image_file_array, path_array):
      combined_flat_darks_hi.meta['combined'] = True
      combined_flat_darks_lo.meta['combined'] = True
      
-     hi_flat_dark_file_name = 'master_flat_dark_hi_{:6.2f}.fit'.format(exptimeflatdarks)
-     lo_flat_dark_file_name = 'master_flat_dark_lo_{:6.2f}.fit'.format(exptimeflatdarks)
+     hi_flat_dark_file_name = 'master_flat_dark_hi_{:4.2f}s.fit'.format(exptimeflatdarks)
+     lo_flat_dark_file_name = 'master_flat_dark_lo_{:4.2f}s.fit'.format(exptimeflatdarks)
      
      # combined_flat_darks_hi.data = changing_zeroes(combined_flat_darks_hi.data)
      # combined_flat_darks_lo.data = changing_zeroes(combined_flat_darks_lo.data)
