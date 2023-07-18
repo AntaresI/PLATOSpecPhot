@@ -1,7 +1,7 @@
 import ccdproc as ccdp
 from astropy import units as u
 import numpy as np
-
+import configparser
 
 def file_calibration(image_file_array, path_array):
      
@@ -9,18 +9,23 @@ def file_calibration(image_file_array, path_array):
      
      calibration_files = []
      ''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+     '''LOADING CONFIG FILE FOR MEMORY LIMIT AND CREATING VARIABLE WITH MEMORY LIMIT USER INPUT'''
+     config = configparser.ConfigParser()
+     config.read('config.ini')
+     memory_limit = float(config['OTHERS']['memorylimit']*10**9)
+     ''''''''''''''''''''''''''''''''''''''''''
      
      '''MASTER DARK FOR IMAGES CREATION'''
      
      print('CREATING MASTER DARKS')
-   
+     
      raw_darks_hi = image_file_array[1].files_filtered(imagetyp='dark', include_path=True)
      raw_darks_lo = image_file_array[2].files_filtered(imagetyp='dark', include_path=True)
      
      exptimerawdarks = image_file_array[1].summary['exptime'][0]
      
-     combined_raw_darks_hi = ccdp.combine(raw_darks_hi, method='median',mem_limit=2000e6,dtype='int16')
-     combined_raw_darks_lo = ccdp.combine(raw_darks_lo, method='median',mem_limit=2000e6,dtype='int16')
+     combined_raw_darks_hi = ccdp.combine(raw_darks_hi, method='median',mem_limit=memory_limit,dtype='int16')
+     combined_raw_darks_lo = ccdp.combine(raw_darks_lo, method='median',mem_limit=memory_limit,dtype='int16')
      
      combined_raw_darks_hi.meta['combined'] = True
      combined_raw_darks_lo.meta['combined'] = True
@@ -44,8 +49,8 @@ def file_calibration(image_file_array, path_array):
      
      exptimeflatdarks = image_file_array[5].summary['exptime'][0]
      
-     combined_flat_darks_hi = ccdp.combine(flat_darks_hi, method='median',mem_limit=2000e6,dtype='int16')
-     combined_flat_darks_lo = ccdp.combine(flat_darks_lo, method='median',mem_limit=2000e6,dtype='int16')
+     combined_flat_darks_hi = ccdp.combine(flat_darks_hi, method='median',mem_limit=memory_limit,dtype='int16')
+     combined_flat_darks_lo = ccdp.combine(flat_darks_lo, method='median',mem_limit=memory_limit,dtype='int16')
      
      combined_flat_darks_hi.meta['combined'] = True
      combined_flat_darks_lo.meta['combined'] = True
@@ -93,18 +98,18 @@ def file_calibration(image_file_array, path_array):
      combined_flats_scaled_hi = ccdp.combine(subtractedflats_hi, method='median',scale=inv_median, mem_limit=2000e6,dtype='float32')
      combined_flats_scaled_lo = ccdp.combine(subtractedflats_lo, method='median',scale=inv_median, mem_limit=2000e6,dtype='float32')
      
-     combined_flats_hi = ccdp.combine(subtractedflats_hi, method='median',mem_limit=2000e6,dtype='int16')
-     combined_flats_lo = ccdp.combine(subtractedflats_lo, method='median',mem_limit=2000e6,dtype='int16')
+     combined_flats_hi = ccdp.combine(subtractedflats_hi, method='median',mem_limit=memory_limit,dtype='int16')
+     combined_flats_lo = ccdp.combine(subtractedflats_lo, method='median',mem_limit=memory_limit,dtype='int16')
      
      combined_flats_scaled_hi.meta['combined'] = True
      combined_flats_scaled_lo.meta['combined'] = True
      combined_flats_hi.meta['combined'] = True
      combined_flats_lo.meta['combined'] = True
      
-     hi_flat_scaled_file_name = 'master_flat_scaled_main_hi{:6.2f}.fit'.format(exptimeflatshi) 
-     lo_flat_scaled_file_name = 'master_flat_scaled_main_lo{:6.2f}.fit'.format(exptimeflatslo) 
-     hi_flat_file_name = 'master_flat_main_hi{:6.2f}.fit'.format(exptimeflatshi) 
-     lo_flat_file_name = 'master_flat_main_lo{:6.2f}.fit'.format(exptimeflatslo) 
+     hi_flat_scaled_file_name = 'master_flat_scaled_main_hi_{:4.2f}s.fit'.format(exptimeflatshi) 
+     lo_flat_scaled_file_name = 'master_flat_scaled_main_lo_{:4.2f}s.fit'.format(exptimeflatslo) 
+     hi_flat_file_name = 'master_flat_main_hi_{:4.2f}s.fit'.format(exptimeflatshi) 
+     lo_flat_file_name = 'master_flat_main_lo_{:4.2f}s.fit'.format(exptimeflatslo) 
      
      combined_flats_scaled_hi.write(path_array[2] / hi_flat_scaled_file_name,overwrite=True)
      combined_flats_scaled_lo.write(path_array[2] / lo_flat_scaled_file_name,overwrite=True)
