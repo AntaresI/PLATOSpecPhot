@@ -148,6 +148,8 @@ def centroid_shifting_and_lc_making(main_paths_obj_red,radii):
     target_lc = np.zeros((1+2*num_of_apertures,num_of_files))
     comp_lc = np.zeros((1+2*num_of_apertures,num_of_files))
     vali_lc = np.zeros((1+2*num_of_apertures,num_of_files))
+    v_minus_c = np.zeros((1+2*num_of_apertures,num_of_files))
+    v_over_c = np.zeros((1+2*num_of_apertures,num_of_files))
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     
     
@@ -168,10 +170,12 @@ def centroid_shifting_and_lc_making(main_paths_obj_red,radii):
         datetime = datestr+'T'+timestr.strip()    #this is tuned to the fits headers time format from camera C4-16000
         # t = Time(datestr,format='isot',scale='utc')
         t = Time(datetime,format='isot',scale='utc')
-        mjd = t.mjd
-        target_lc[0,i] = mjd
-        comp_lc[0,i] = mjd
-        vali_lc[0,i] = mjd
+        jd = t.mjd+2400000.5
+        target_lc[0,i] = jd
+        comp_lc[0,i] = jd
+        vali_lc[0,i] = jd
+        v_minus_c[0,i] = jd
+        v_over_c[0,i] = jd
         ''''''''''''''''''''''''''''''''''''''''''
         
         # print("MJD: ",datestr,mjd)
@@ -232,11 +236,24 @@ def centroid_shifting_and_lc_making(main_paths_obj_red,radii):
         print("Distance between input coordinates of target star and closest object is: ",dt)
         print("Distance between input coordinates of comparison star and closest object is: ",dc)
         print("Distance between input coordinates of validation star and closest object is: ",dv)
-        
+    
+    '''CREATING V-C AND V/C ARRAYS'''
+    v_minus_c[1:num_of_apertures+1,:] = target_lc[1:num_of_apertures+1,:] - comp_lc[1:num_of_apertures+1,:]
+    v_over_c[1:num_of_apertures+1,:] = target_lc[1:num_of_apertures+1,:]/comp_lc[1:num_of_apertures+1,:]
+    
+    v_minus_c[num_of_apertures+1:,:] = np.sqrt(target_lc[num_of_apertures+1:,:]**2+\
+                                               comp_lc[num_of_apertures+1:,:]**2)
+    v_over_c[num_of_apertures+1:,:] = np.sqrt((v_minus_c[1:num_of_apertures+1,:])**2*\
+                                (((target_lc[num_of_apertures+1:,:]**2)/(target_lc[1:num_of_apertures+1,:]**2))+\
+                                 ((comp_lc[num_of_apertures+1:,:]**2)/(comp_lc[1:num_of_apertures+1,:]**2))))
+                                    
+    ''''''''''''''''''''''''''''''''
     '''SAVING LIGHTCURVES AND RADII TO TEXT FILE IN LIGHTCURVES FOLDER'''    
     np.savetxt(reduced_lc_path.__str__()+'//target_lc.txt',target_lc) 
     np.savetxt(reduced_lc_path.__str__()+'//comp_lc.txt',comp_lc)
     np.savetxt(reduced_lc_path.__str__()+'//vali_lc.txt',vali_lc) 
+    np.savetxt(reduced_lc_path.__str__()+'//v_minus_c.txt',v_minus_c) 
+    np.savetxt(reduced_lc_path.__str__()+'//v_over_c.txt',v_over_c) 
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     
     return target_lc, comp_lc, vali_lc,radii
