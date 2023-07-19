@@ -11,7 +11,7 @@ def plotting(targ_lc, comp_lc, vali_lc, radii):
         '''COMPUTING DIFFERENCES OF MAGNITUDES AND COMPUTING STANDARD DEVIATIONS'''
         print('WRITING OUT ALL STANDARD DEVIATIONS')
         
-        for i in range(len(radii)):
+        for i in range(num_of_apertures):
             iaper = i
             targ_lc_diff = targ_lc[iaper+1,:]-comp_lc[iaper+1,:]
             vali_lc_diff = comp_lc[iaper+1,:]-vali_lc[iaper+1,:]
@@ -70,39 +70,40 @@ def plotting(targ_lc, comp_lc, vali_lc, radii):
             # axs[0].set_xticks(np.arange(0,210,30))
             # vali_lc[0,:]-math.floor(vali_lc[0,0])+2400000.5
             # print(vali_lc[0,:]-math.floor(vali_lc[0,0])+0.5)
-            print(vali_lc[0,0])
+            print(f"JD date of the first value is {vali_lc[0,0]}")
             # x = vali_lc[0,:]-math.floor(vali_lc[0,0])-0.5
             fig, axs = plt.subplots(2,gridspec_kw={'height_ratios': [3, 1]},sharex=True)
-            axs[0].scatter(vali_lc[0,:]-math.floor(vali_lc[0,0])+0.5,vali_lc_diff,s=2,color='blue')
-            axs[1].set_xlabel('JD - '+str(math.floor(vali_lc[0,0]+2400000.5)),fontsize=10)
+            axs[0].scatter(vali_lc[0,:]-math.floor(vali_lc[0,0]),vali_lc_diff,s=2,color='blue')
+            axs[1].set_xlabel('JD - '+str(math.floor(vali_lc[0,0])),fontsize=10)
             axs[0].set_ylabel('Relative magnitude [mag]', fontsize=10)
             axs[1].set_ylabel('Error [mag]')
-            axs[1].scatter(vali_lc[0,:]-math.floor(vali_lc[0,0])+0.5,diff_lc_vali_err, s=2,color='blue')
+            axs[1].scatter(vali_lc[0,:]-math.floor(vali_lc[0,0]),diff_lc_vali_err, s=2,color='blue')
             axs[0].invert_yaxis()
             axs[0].set_title('Comparison - Validation      Aperture '+str(int(radii[aper_num]))+" pxl")
             
             figa, axos = plt.subplots(2,gridspec_kw={'height_ratios': [3, 1]},sharex=True)
-            axos[0].scatter(targ_lc[0,:]-math.floor(targ_lc[0,0])+0.5,targ_lc_diff,s=2,color='red')
-            axos[1].set_xlabel('JD - '+str(math.floor(targ_lc[0,0]+2400000.5)),fontsize=10)
+            axos[0].scatter(targ_lc[0,:]-math.floor(targ_lc[0,0]),targ_lc_diff,s=2,color='red')
+            axos[1].set_xlabel('JD - '+str(math.floor(targ_lc[0,0])),fontsize=10)
             axos[0].set_ylabel('Relative magnitude [mag]', fontsize=10)
             axos[1].set_ylabel('Error [mag]')
-            axos[1].scatter(targ_lc[0,:]-math.floor(targ_lc[0,0])+0.5,diff_lc_targ_err, s=2,color='red')
+            axos[1].scatter(targ_lc[0,:]-math.floor(targ_lc[0,0]),diff_lc_targ_err, s=2,color='red')
             axos[0].invert_yaxis()
             axos[0].set_title('Visual - Comparison         Aperture '+str(int(radii[aper_num]))+" pxl")
             
             plt.show()
             
         else:
+            print(f"JD date of the first value is {vali_lc[0,0]}")
             plt.figure(1,figsize=(16,8))
-            plt.errorbar(vali_lc[0,:]-math.floor(vali_lc[0,0])+2400000.5,vali_lc_diff,yerr=None,fmt='b.',ecolor='black',capsize=2)
-            plt.xlabel('JD - '+str(math.floor(vali_lc[0,0])+2400000),fontsize=10)
+            plt.errorbar(vali_lc[0,:]-math.floor(vali_lc[0,0]),vali_lc_diff,yerr=None,fmt='b.',ecolor='black',capsize=2)
+            plt.xlabel('JD - '+str(math.floor(vali_lc[0,0])),fontsize=10)
             plt.ylabel('Relative magnitude [mag]', fontsize=10)
             plt.gca().invert_yaxis()
             plt.title('Comparison - Validation      Aperture'+str(int(radii[aper_num]))+" pxl")
             
             plt.figure(2,figsize=(16,8))
-            plt.errorbar(targ_lc[0,:]-math.floor(targ_lc[0,0])+2400000.5,targ_lc_diff,yerr=None,fmt='r.',ecolor='black',capsize=2)
-            plt.xlabel('JD - '+str(math.floor(targ_lc[0,0])+2400000),fontsize=10)
+            plt.errorbar(targ_lc[0,:]-math.floor(targ_lc[0,0]),targ_lc_diff,yerr=None,fmt='r.',ecolor='black',capsize=2)
+            plt.xlabel('JD - '+str(math.floor(targ_lc[0,0])),fontsize=10)
             plt.ylabel('Relative magnitude [mag]', fontsize=10)
             plt.gca().invert_yaxis()
             plt.title('Visual - Comparison         Aperture '+str(int(radii[aper_num]))+" pxl")
