@@ -12,7 +12,7 @@ def file_calibration(image_file_array, path_array):
      '''LOADING CONFIG FILE FOR MEMORY LIMIT AND CREATING VARIABLE WITH MEMORY LIMIT USER INPUT'''
      config = configparser.ConfigParser()
      config.read('config.ini')
-     memory_limit = float(config['OTHERS']['memorylimit']*10**9)
+     memory_limit = float(int(config['OTHERS']['memorylimit'])*10**9)
      ''''''''''''''''''''''''''''''''''''''''''
      
      '''MASTER DARK FOR IMAGES CREATION'''
