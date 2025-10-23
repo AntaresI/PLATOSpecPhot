@@ -3,7 +3,7 @@ from astropy.io import fits
 import matplotlib.pyplot as plt
 from photutils.utils import calc_total_error
 from Stars import getting_stars
-from photutils import CircularAperture
+from photutils.aperture import CircularAperture
 
 def phot_params_from_user(main_paths_obj_red):
     while True:
@@ -71,3 +71,4 @@ def phot_params_from_user(main_paths_obj_red):
         if yes_or_no == "Y":
             return user_input_array
   
+
